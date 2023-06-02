@@ -1,6 +1,7 @@
 {
-  "name": "language-learning-app",
+  "name": "fluentify-language-learning-app",
   "version": "0.1.0",
+  "author": "Michał Paczyński",
   "private": true,
   "scripts": {
     "dev": "next dev",
