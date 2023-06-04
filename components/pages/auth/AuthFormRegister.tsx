@@ -11,19 +11,27 @@ const AuthFormRegister = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const formSubmitHandler = (e: FormEvent) => {
+  const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     const email = emailRef.current?.value;
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
 
-    // validate user input
+    if (!email || !username || !password) return;
 
-    const newUserData = { email, username, password };
-    console.log(newUserData);
+    // TODO: create useForm hook
+    try {
+      await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, username, password }),
+      });
 
-    // send request to endpoint
+      // TODO: add better error handling
+    } catch (err: any) {
+      console.error(err.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -39,8 +47,8 @@ const AuthFormRegister = () => {
         <div className='mb-8'>
           <AuthFormInput type='password' placeholder='Password' ref={passwordRef} />
         </div>
-        <div className='flex justify-center'>
-          <Button>Create account</Button>
+        <div className='flex flex-col items-center'>
+          <Button type='submit'>Create account</Button>
         </div>
       </form>
     </>
