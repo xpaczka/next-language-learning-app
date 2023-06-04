@@ -5,6 +5,7 @@ import catchAsync from '@/utils/catchAsync';
 import { connectToDatabase } from '@/utils/database';
 // Third-party imports
 import isEmail from 'validator/lib/isEmail';
+import { hash } from 'bcryptjs';
 // Models imports
 import User from '@/models/userModel';
 
@@ -24,7 +25,9 @@ const handler = catchAsync(async (req: NextRequest) => {
   }
 
   await connectToDatabase();
-  const user = await User.create({ email, username, password });
+
+  const hashedPassword = await hash(password, 10);
+  const user = await User.create({ email, username, password: hashedPassword });
 
   return new Response(JSON.stringify({ status: 'success', data: user }), { status: 201 });
 });
