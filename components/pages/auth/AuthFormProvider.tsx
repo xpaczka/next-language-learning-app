@@ -2,17 +2,17 @@
 import Image from 'next/image';
 
 interface AuthFormProviderProps {
-  name: string;
-  icon: string;
+  provider: any;
   background: string;
 }
 
-const AuthFormProvider = ({ name, icon, background }: AuthFormProviderProps) => {
+const AuthFormProvider = ({ provider, background }: AuthFormProviderProps) => {
+  // TODO: add sign in functionality
   return (
-    <button className={`w-16 aspect-square p-4 rounded-md ${background} outline-none border-none`}>
+    <button className={`w-16 aspect-square p-4 rounded-md outline-none border-none ${background}`}>
       <Image
-        src={`/icons/${icon}`}
-        alt={`Login with ${name}`}
+        src={`/icons/${provider.id}-logo.svg`}
+        alt={`Login with ${provider.name}`}
         width={32}
         height={32}
         className='w-8 h-8 object-contain invert'
