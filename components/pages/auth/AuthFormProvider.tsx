@@ -11,7 +11,7 @@ const AuthFormProvider = ({ name, icon, background }: AuthFormProviderProps) => 
   return (
     <button className={`w-16 aspect-square p-4 rounded-md ${background} outline-none border-none`}>
       <Image
-        src={`/static/icons/${icon}`}
+        src={`/icons/${icon}`}
         alt={`Login with ${name}`}
         width={32}
         height={32}

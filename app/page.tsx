@@ -22,7 +22,7 @@ const Homepage: NextPage = () => {
       </div>
       <div className='w-full lg:w-1/2 flex justify-center lg:justify-end lg:pl-10 mb-5 lg:mb-0'>
         <Image
-          src='/static/images/different-cultures.jpg'
+          src='/images/different-cultures.jpg'
           alt='People from different cultures'
           height={575}
           width={600}
