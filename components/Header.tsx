@@ -7,7 +7,7 @@ const Header = () => {
     <header className='w-full bg-white fixed left-0 top-0 right-0'>
       <Link href='/' className='container h-16 sm:h-24 flex items-center justify-between'>
         <Image
-          src='/static/images/fluentify-logo.svg'
+          src='/images/fluentify-logo.svg'
           alt='Fluentify Logo'
           height={37}
           width={144}
