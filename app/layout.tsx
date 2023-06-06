@@ -18,7 +18,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html lang='en'>
       <body className={josefin.className}>
         <Header />
-        <main className='pt-24'>{children}</main>
+        <main className='pt-16 sm:pt-24'>{children}</main>
       </body>
     </html>
   );

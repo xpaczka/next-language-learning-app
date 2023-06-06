@@ -2,28 +2,38 @@
 
 // Next imports
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 // React imports
-import { useRef, FormEvent } from 'react';
+import { useRef, FormEvent, useState } from 'react';
 // Components imports
 import AuthFormInput from './AuthFormInput';
+import AuthFormError from './AuthFormError';
 import Button from '@/components/Button';
 
 const AuthFormLogin = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const formSubmitHandler = (e: FormEvent) => {
+  const [error, setError] = useState<string | null>(null);
+
+  const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
-    // validate user input
+    if (!email || !password) return;
 
-    const loginData = { email, password };
-    console.log(loginData);
+    // TODO: create useForm hook
+    try {
+      // TODO: redirect to user dashboard if success
+      const response = await signIn('credentials', { email, password, redirect: false });
 
-    // send request to endpoint
+      // TODO: rethink error displaying (leave as it is or use query parameters)
+      if (response?.error) setError(response.error);
+    } catch (err: any) {
+      console.error(err.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -39,8 +49,9 @@ const AuthFormLogin = () => {
             Forgot password?
           </Link>
         </div>
-        <div className='flex justify-center mb-8'>
-          <Button>Login</Button>
+        <div className='flex flex-col items-center mb-8'>
+          {error && <AuthFormError error={error} />}
+          <Button type='submit'>Login</Button>
         </div>
       </form>
     </>
