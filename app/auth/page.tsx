@@ -1,18 +1,26 @@
 'use client';
 
+// Next imports
+import { NextPage } from 'next';
+import { getProviders } from 'next-auth/react';
 // React imports
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // Components imports
 import AuthFormLogin from '@/components/pages/auth/AuthFormLogin';
 import AuthFormRegister from '@/components/pages/auth/AuthFormRegister';
 import AuthFormProvidersList from '@/components/pages/auth/AuthFormProvidersList';
 
-const AuthPage = async () => {
+const AuthPage: NextPage = () => {
   // TODO: fix issue with isLoginForm state not updating
   const [isLoginForm, setIsLoginForm] = useState<boolean>(true);
+  const [providers, setProviders] = useState<object>({})
 
-  const response = await fetch('http://localhost:3000/api/auth/providers');
-  const providers = await response.json();
+  useEffect(() => {
+    (async () => {
+      const response = await getProviders();
+      if (response) setProviders(response);
+    })()
+  }, [])
 
   if (!providers) return <></>;
 
