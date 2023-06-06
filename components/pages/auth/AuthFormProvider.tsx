@@ -1,18 +1,19 @@
 // Next imports
 import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 interface AuthFormProviderProps {
-  provider: any;
+  id: string; 
+  name: string;
   background: string;
 }
 
-const AuthFormProvider = ({ provider, background }: AuthFormProviderProps) => {
-  // TODO: add sign in functionality
+const AuthFormProvider = ({ id, name, background }: AuthFormProviderProps) => {
   return (
-    <button className={`w-16 aspect-square p-4 rounded-md outline-none border-none ${background}`}>
+    <button onClick={() => signIn(id)} className={`w-16 aspect-square p-4 rounded-md outline-none border-none ${background}`}>
       <Image
-        src={`/icons/${provider.id}-logo.svg`}
-        alt={`Login with ${provider.name}`}
+        src={`/icons/${id}-logo.svg`}
+        alt={`Login with ${name}`}
         width={32}
         height={32}
         className='w-8 h-8 object-contain invert'

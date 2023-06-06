@@ -22,4 +22,5 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.DISCORD_SECRET!,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET
 };

@@ -2,7 +2,8 @@
 
 // Next imports
 import { NextPage } from 'next';
-import { getProviders } from 'next-auth/react';
+import { ClientSafeProvider, LiteralUnion, getProviders } from 'next-auth/react';
+import { BuiltInProviderType } from 'next-auth/providers';
 // React imports
 import { useEffect, useState } from 'react';
 // Components imports
@@ -11,9 +12,8 @@ import AuthFormRegister from '@/components/pages/auth/AuthFormRegister';
 import AuthFormProvidersList from '@/components/pages/auth/AuthFormProvidersList';
 
 const AuthPage: NextPage = () => {
-  // TODO: fix issue with isLoginForm state not updating
   const [isLoginForm, setIsLoginForm] = useState<boolean>(true);
-  const [providers, setProviders] = useState<object>({})
+  const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
 
   useEffect(() => {
     (async () => {
