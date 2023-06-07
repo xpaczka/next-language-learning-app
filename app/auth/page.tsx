@@ -11,18 +11,21 @@ import AuthFormLogin from '@/components/pages/auth/AuthFormLogin';
 import AuthFormRegister from '@/components/pages/auth/AuthFormRegister';
 import AuthFormProvidersList from '@/components/pages/auth/AuthFormProvidersList';
 
+// TODO: if error in the url, remove it after the refresh
+// TODO: if logged in, immediately redirect to dashboard
 const AuthPage: NextPage = () => {
   const [isLoginForm, setIsLoginForm] = useState<boolean>(true);
-  const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null>(null);
 
   useEffect(() => {
     (async () => {
       const response = await getProviders();
       if (response) setProviders(response);
-    })()
-  }, [])
-
-  if (!providers) return <></>;
+    })();
+  }, []);
 
   return (
     <div className='container mt-8'>
@@ -30,9 +33,13 @@ const AuthPage: NextPage = () => {
         {isLoginForm ? (
           <>
             <AuthFormLogin />
-            <div>
-              <p className='text-xl text-center font-bold mb-8'>or using</p>
-              <AuthFormProvidersList providers={providers} />
+            <div className='h-32'>
+              {providers && (
+                <>
+                  <p className='text-xl text-center font-bold mb-8'>or using</p>
+                  <AuthFormProvidersList providers={providers} />
+                </>
+              )}
             </div>
           </>
         ) : (

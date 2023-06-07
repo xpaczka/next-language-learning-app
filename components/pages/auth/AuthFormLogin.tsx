@@ -4,17 +4,18 @@
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 // React imports
-import { useRef, FormEvent, useState } from 'react';
+import { useRef, FormEvent } from 'react';
 // Components imports
 import AuthFormInput from './AuthFormInput';
 import AuthFormError from './AuthFormError';
 import Button from '@/components/Button';
 
+import { useSearchParams } from 'next/navigation';
+
 const AuthFormLogin = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
-  const [error, setError] = useState<string | null>(null);
+  const error = useSearchParams().get('error');
 
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -26,11 +27,8 @@ const AuthFormLogin = () => {
 
     // TODO: create useForm hook
     try {
-      // TODO: redirect to user dashboard if success
-      const response = await signIn('credentials', { email, password, redirect: false });
-
-      // TODO: rethink error displaying (leave as it is or use query parameters)
-      if (response?.error) setError(response.error);
+      await signIn('credentials', { email, password });
+      // TODO: add better error handling
     } catch (err: any) {
       console.error(err.message || 'Something went wrong');
     }

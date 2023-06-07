@@ -10,7 +10,9 @@ const userSchema = new Schema({
     validator: [isEmail, 'Please provide valid email address'],
   },
   username: { type: String, required: [true, 'User must have an username'], unique: true, minLength: 5 },
-  password: { type: String, required: [true, 'User must have a password'], minLength: 8 },
+  name: { type: String, required: [true, 'User must have a name'] },
+  password: { type: String, minLength: 8 },
+  image: { type: String },
 });
 
 const User = models.User || model('User', userSchema);

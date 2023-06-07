@@ -1,5 +1,6 @@
 'use client';
-
+// Next imports
+import { signIn } from 'next-auth/react';
 // React imports
 import { useRef, FormEvent } from 'react';
 // Components imports
@@ -9,6 +10,7 @@ import Button from '@/components/Button';
 const AuthFormRegister = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const formSubmitHandler = async (e: FormEvent) => {
@@ -16,18 +18,14 @@ const AuthFormRegister = () => {
 
     const email = emailRef.current?.value;
     const username = usernameRef.current?.value;
+    const name = nameRef.current?.value;
     const password = passwordRef.current?.value;
 
-    if (!email || !username || !password) return;
+    if (!email || !username || !name || !password) return;
 
     // TODO: create useForm hook
     try {
-      await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, username, password }),
-      });
-
+      await signIn('credentials', { email, username, name, password, newUser: true });
       // TODO: add better error handling
     } catch (err: any) {
       console.error(err.message || 'Something went wrong');
@@ -43,6 +41,9 @@ const AuthFormRegister = () => {
         </div>
         <div className='mb-4'>
           <AuthFormInput type='text' placeholder='Username' ref={usernameRef} />
+        </div>
+        <div className='mb-4'>
+          <AuthFormInput type='text' placeholder='Name' ref={nameRef} />
         </div>
         <div className='mb-8'>
           <AuthFormInput type='password' placeholder='Password' ref={passwordRef} />
