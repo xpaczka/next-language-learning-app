@@ -9,6 +9,7 @@ import { compare } from 'bcryptjs';
 import User from '@/models/userModel';
 // Utils imports
 import { signupWithCredentials } from '@/utils/auth/signup';
+import { connectToDatabase } from '../database';
 
 export const CredentialsProviderOptions: CredentialsConfig = {
   id: 'credentials',
@@ -22,18 +23,24 @@ export const CredentialsProviderOptions: CredentialsConfig = {
     newUser: { label: 'new-user' },
   },
   async authorize(credentials) {
-    if (credentials?.newUser) {
-      const { email, username, name, password } = credentials;
-      return signupWithCredentials(email, username, name, password);
+    try {
+      if (credentials?.newUser) {
+        const { email, username, name, password } = credentials;
+        return signupWithCredentials(email, username, name, password);
+      }
+
+      await connectToDatabase();
+
+      const user = await User.findOne({ email: credentials?.email });
+      if (!user) return null;
+
+      const validPassword = await compare(credentials!.password, user.password);
+      if (!validPassword) return null;
+
+      return user;
+    } catch (err: any) {
+      console.error(err.message || 'Something went wrong');
     }
-
-    const user = await User.findOne({ email: credentials?.email });
-    if (!user) return null;
-
-    const validPassword = await compare(credentials!.password, user.password);
-    if (!validPassword) return null;
-
-    return user;
   },
 };
 

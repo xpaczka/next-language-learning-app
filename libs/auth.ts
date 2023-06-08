@@ -16,7 +16,7 @@ import {
 export const authOptions: AuthOptions = {
   pages: { signIn: '/auth', error: '/auth' },
   providers: [
-    // TODO: credentials provider - test for invalid inputs
+    // TODO: credentials provider - test for invalid inputs on register
     CredentialsProvider(CredentialsProviderOptions),
     FacebookProvider(FacebookProviderOptions),
     GoogleProvider(GoogleProviderOptions),
@@ -29,6 +29,8 @@ export const authOptions: AuthOptions = {
     async signIn({ user }) {
       return await signInCallback(user);
     },
+    // TODO: session callback
+    // TODO: jwt callback
   },
   session: { strategy: 'jwt' },
   secret: process.env.NEXTAUTH_SECRET,

@@ -1,17 +1,21 @@
 'use client';
-// Next imports
-import { signIn } from 'next-auth/react';
+
 // React imports
 import { useRef, FormEvent } from 'react';
 // Components imports
 import AuthFormInput from './AuthFormInput';
 import Button from '@/components/Button';
+import LoadingSpinner from '@/components/LoadingSpinner';
+// Hooks imports
+import useCredentials from '@/hooks/useCredentials';
 
 const AuthFormRegister = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  const { isLoading, sendCredentials } = useCredentials();
 
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -23,13 +27,7 @@ const AuthFormRegister = () => {
 
     if (!email || !username || !name || !password) return;
 
-    // TODO: create useForm hook
-    try {
-      await signIn('credentials', { email, username, name, password, newUser: true });
-      // TODO: add better error handling
-    } catch (err: any) {
-      console.error(err.message || 'Something went wrong');
-    }
+    await sendCredentials({ email, username, name, password, newUser: true });
   };
 
   return (
@@ -49,7 +47,7 @@ const AuthFormRegister = () => {
           <AuthFormInput type='password' placeholder='Password' ref={passwordRef} />
         </div>
         <div className='flex flex-col items-center'>
-          <Button type='submit'>Create account</Button>
+          <Button type='submit'>{isLoading ? <LoadingSpinner /> : 'Create account'}</Button>
         </div>
       </form>
     </>

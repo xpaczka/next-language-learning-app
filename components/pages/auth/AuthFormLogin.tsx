@@ -2,20 +2,23 @@
 
 // Next imports
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 // React imports
 import { useRef, FormEvent } from 'react';
 // Components imports
 import AuthFormInput from './AuthFormInput';
 import AuthFormError from './AuthFormError';
 import Button from '@/components/Button';
-
-import { useSearchParams } from 'next/navigation';
+import LoadingSpinner from '@/components/LoadingSpinner';
+// Hooks imports
+import useCredentials from '@/hooks/useCredentials';
 
 const AuthFormLogin = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const error = useSearchParams().get('error');
+
+  const { isLoading, sendCredentials } = useCredentials();
 
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -25,13 +28,7 @@ const AuthFormLogin = () => {
 
     if (!email || !password) return;
 
-    // TODO: create useForm hook
-    try {
-      await signIn('credentials', { email, password });
-      // TODO: add better error handling
-    } catch (err: any) {
-      console.error(err.message || 'Something went wrong');
-    }
+    await sendCredentials({ email, password });
   };
 
   return (
@@ -43,13 +40,14 @@ const AuthFormLogin = () => {
         </div>
         <div className='mb-8 flex flex-col items-end'>
           <AuthFormInput type='password' placeholder='Password' ref={passwordRef} />
+          {/* TODO: implement forgot password */}
           <Link href='/auth/forgot-password' title='Forgotten password' className='text-primary leading-8 font-bold'>
             Forgot password?
           </Link>
         </div>
         <div className='flex flex-col items-center mb-8'>
           {error && <AuthFormError error={error} />}
-          <Button type='submit'>Login</Button>
+          <Button type='submit'>{isLoading ? <LoadingSpinner /> : 'Login'}</Button>
         </div>
       </form>
     </>
