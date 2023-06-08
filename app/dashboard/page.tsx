@@ -1,17 +1,13 @@
 'use client';
 
-import { SessionProvider } from 'next-auth/react';
-import Dashboard from '@/components/pages/dashboard/Dashboard';
+// Next imports
+import { useSession } from 'next-auth/react';
 
-// TODO: move SessionProvider to a more suitable place
+// TODO: implement dashboard page
 const DashboardPage = () => {
-  return (
-    <SessionProvider>
-      <div className='container'>
-        <Dashboard />
-      </div>
-    </SessionProvider>
-  );
+  const { data: session } = useSession();
+
+  return <div className='container'>{JSON.stringify(session)}</div>;
 };
 
 export default DashboardPage;

@@ -2,6 +2,7 @@
 import { Josefin_Sans } from 'next/font/google';
 // Components imports
 import Header from '@/components/Header';
+import { NextAuthProvider } from './providers';
 // Styles imports
 import './globals.css';
 
@@ -17,8 +18,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang='en'>
       <body className={josefin.className}>
-        <Header />
-        <main className='pt-16 sm:pt-24'>{children}</main>
+        <NextAuthProvider>
+          <Header />
+          <main className='pt-16 sm:pt-24'>{children}</main>
+        </NextAuthProvider>
       </body>
     </html>
   );
