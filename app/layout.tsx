@@ -6,7 +6,7 @@ import { NextAuthProvider } from './providers';
 // Styles imports
 import './globals.css';
 
-const josefin = Josefin_Sans({ subsets: ['latin-ext'] });
+const josefin = Josefin_Sans({ subsets: ['latin-ext'], display: 'swap' });
 
 export const metadata = {
   title: 'fluentify - Master languages like a hero',
