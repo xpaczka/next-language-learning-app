@@ -2,17 +2,17 @@
 
 // Next imports
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+// import { useSession } from 'next-auth/react';
+// import { useRouter } from 'next/navigation';
 // Components imports
 import AuthFormLogin from '@/components/pages/auth/AuthFormLogin';
 import AuthFormProvidersList from '@/components/pages/auth/AuthFormProvidersList';
 
 const AuthLoginPage = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
+  // const { data: session } = useSession();
+  // const router = useRouter();
 
-  if (session) return router.replace('/dashboard');
+  // if (session) return router.replace('/dashboard');
 
   return (
     <div className='container mt-8'>
@@ -23,9 +23,9 @@ const AuthLoginPage = () => {
           <AuthFormProvidersList />
         </div>
         <p className='mt-16 text-xl text-center font-bold'>
-        No account yet?{' '}
+          No account yet?{' '}
           <Link href='/auth/register' className='text-primary cursor-pointer'>
-              Register here
+            Register here
           </Link>
         </p>
       </div>

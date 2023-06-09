@@ -12,11 +12,8 @@ import Button from '@/components/Button';
 import LoadingSpinner from '@/components/LoadingSpinner';
 // Hooks imports
 import useCredentials from '@/hooks/useCredentials';
-import useAuthErrorReload from '@/hooks/useAuthErrorReload';
 
 const AuthFormLogin = () => {
-  useAuthErrorReload('/auth/login');
-
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const error = useSearchParams().get('error');

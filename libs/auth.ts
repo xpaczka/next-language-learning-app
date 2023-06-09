@@ -16,7 +16,6 @@ import {
 export const authOptions: AuthOptions = {
   pages: { signIn: '/auth/login', newUser: '/auth/register', error: '/auth/register' },
   providers: [
-    // TODO: credentials provider - test for invalid inputs on register
     CredentialsProvider(CredentialsProviderOptions),
     FacebookProvider(FacebookProviderOptions),
     GoogleProvider(GoogleProviderOptions),

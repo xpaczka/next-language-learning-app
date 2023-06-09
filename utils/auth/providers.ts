@@ -8,7 +8,6 @@ import { compare } from 'bcryptjs';
 // Models imports
 import User from '@/models/userModel';
 // Utils imports
-import { signupWithCredentials } from '@/utils/auth/signup';
 import { connectToDatabase } from '../database';
 
 export const CredentialsProviderOptions: CredentialsConfig = {
@@ -24,12 +23,11 @@ export const CredentialsProviderOptions: CredentialsConfig = {
   },
   async authorize(credentials) {
     try {
-      if (credentials?.newUser) {
-        const { email, username, name, password } = credentials;
-        return signupWithCredentials(email, username, name, password);
-      }
-
       await connectToDatabase();
+
+      if (credentials?.newUser) {
+        return await User.findOne({ email: credentials.email, username: credentials.username });
+      }
 
       const user = await User.findOne({ email: credentials?.email });
       if (!user) return null;
