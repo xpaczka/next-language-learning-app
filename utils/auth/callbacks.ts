@@ -1,10 +1,12 @@
 // Next imports
-import { DefaultUser, User } from 'next-auth';
+import { Account, DefaultUser, User, Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import { AdapterUser } from 'next-auth/adapters';
 // Models imports
 import UserModel from '@/models/userModel';
 // Utils imports
 import { connectToDatabase } from '../database';
+import { generateAccessToken } from './token';
 
 const createUsername = (name: DefaultUser['name'], id: string): string => {
   if (!name) return `user#${id}`;
@@ -40,3 +42,32 @@ export const signInCallback = async (user: User | AdapterUser): Promise<boolean>
     return false;
   }
 };
+
+export const sessionCallback = async (session: Session, token: JWT): Promise<Session> => {
+  try {
+    if (token.accessToken) session.accessToken = token.accessToken;
+    if (session.user) session.user.id = token.id;
+  
+    return session;
+  } catch (err: any) {
+    console.error(err.message);
+    return session;
+  }
+}
+
+export const jwtCallback = async (token: JWT, account: Account | null, user: User | AdapterUser): Promise<JWT> => {
+  try {
+    if (account) {
+      await connectToDatabase();
+      const userInDatabase = await UserModel.findOne({ email: user.email });
+  
+      token.accessToken = account.access_token || generateAccessToken(userInDatabase._id);
+      token.id = userInDatabase._id;
+    }
+  
+    return token;
+  } catch (err: any) {
+    console.error(err.message);
+    return token;
+  }
+}

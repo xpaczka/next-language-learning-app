@@ -5,7 +5,7 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
 import DiscordProvider from 'next-auth/providers/discord';
 // Utils imports
-import { signInCallback } from '@/utils/auth/callbacks';
+import { jwtCallback, sessionCallback, signInCallback } from '@/utils/auth/callbacks';
 import {
   DiscordProviderOptions,
   FacebookProviderOptions,
@@ -23,14 +23,10 @@ export const authOptions: AuthOptions = {
     DiscordProvider(DiscordProviderOptions),
   ],
   callbacks: {
-    async redirect() {
-      return '/dashboard';
-    },
-    async signIn({ user }) {
-      return await signInCallback(user);
-    },
-    // TODO: session callback
-    // TODO: jwt callback
+    signIn: async ({ user }) => await signInCallback(user),
+    redirect: async () => '/dashboard',
+    session: async ({ session, token }) => await sessionCallback(session, token),
+    jwt: async ({ token, account, user }) => await jwtCallback(token, account, user),
   },
   session: { strategy: 'jwt' },
   secret: process.env.NEXTAUTH_SECRET,
