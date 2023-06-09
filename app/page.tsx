@@ -18,7 +18,7 @@ const Homepage: NextPage = () => {
         <p className='sm:text-lg lg:text-xl font-bold lg:leading-10 mb-6'>
           Start your heroic journey today and let FLUENTIFY be your guide!
         </p>
-        <Button href='/auth'>Let's go</Button>
+        <Button href='/auth/login'>Let's go</Button>
       </div>
       <div className='w-full lg:w-1/2 flex justify-center lg:justify-end lg:pl-10 mb-5 lg:mb-0'>
         <Image
