@@ -8,8 +8,13 @@ import Button from '@/components/Button';
 import LoadingSpinner from '@/components/LoadingSpinner';
 // Hooks imports
 import useCredentials from '@/hooks/useCredentials';
+import useAuthErrorReload from '@/hooks/useAuthErrorReload';
 
+// TODO: display error from url query
+// TODO: send email on register
 const AuthFormRegister = () => {
+  useAuthErrorReload('/auth/register');
+
   const emailRef = useRef<HTMLInputElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);

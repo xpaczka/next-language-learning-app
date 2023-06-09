@@ -1,6 +1,8 @@
 // Next imports
-import { ClientSafeProvider, LiteralUnion } from 'next-auth/react';
+import { ClientSafeProvider, LiteralUnion, getProviders } from 'next-auth/react';
 import { BuiltInProviderType } from 'next-auth/providers';
+// React imports
+import { useState, useEffect } from 'react';
 // Components imports
 import AuthFormProvider from './AuthFormProvider';
 
@@ -10,7 +12,19 @@ const providersData = [
   { id: 'discord', background: 'bg-[#5865f2]' },
 ];
 
-const AuthFormProvidersList = ({ providers }: { providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> }) => {
+const AuthFormProvidersList = () => {
+  const [providers, setProviders] = useState<Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getProviders();
+      if (response) setProviders(response);
+    })();
+  }, []);
+
   return (
     <div className='flex justify-center gap-8 h-16'>
       {providers && Object.values(providers).filter(provider => provider.id !== 'credentials').map((provider) => {

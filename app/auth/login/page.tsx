@@ -1,42 +1,26 @@
 'use client';
 
 // Next imports
-import { NextPage } from 'next';
 import Link from 'next/link';
-import { ClientSafeProvider, LiteralUnion, getProviders } from 'next-auth/react';
-import { BuiltInProviderType } from 'next-auth/providers';
-// React imports
-import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 // Components imports
 import AuthFormLogin from '@/components/pages/auth/AuthFormLogin';
 import AuthFormProvidersList from '@/components/pages/auth/AuthFormProvidersList';
 
-// TODO: if error in the url, remove it after the refresh
-// TODO: if logged in, immediately redirect to dashboard
-const AuthPage: NextPage = () => {
-  const [providers, setProviders] = useState<Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null>(null);
+const AuthLoginPage = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      const response = await getProviders();
-      if (response) setProviders(response);
-    })();
-  }, []);
+  if (session) return router.replace('/dashboard');
 
   return (
     <div className='container mt-8'>
       <div className='max-w-lg mx-auto'>
         <AuthFormLogin />
         <div className='h-32'>
-          {providers && (
-          <>
-            <p className='text-xl text-center font-bold mb-8'>or using</p>
-            <AuthFormProvidersList providers={providers} />
-          </>
-          )}
+          <p className='text-xl text-center font-bold mb-8'>or using</p>
+          <AuthFormProvidersList />
         </div>
         <p className='mt-16 text-xl text-center font-bold'>
         No account yet?{' '}
@@ -49,4 +33,4 @@ const AuthPage: NextPage = () => {
   );
 };
 
-export default AuthPage;
+export default AuthLoginPage;

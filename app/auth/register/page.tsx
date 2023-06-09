@@ -1,12 +1,19 @@
+'use client';
+
 // Next imports
-import { NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 // Components imports
 import AuthFormRegister from '@/components/pages/auth/AuthFormRegister';
 
-// TODO: if error in the url, remove it after the refresh
-// TODO: if logged in, immediately redirect to dashboard
-const AuthPage: NextPage = () => {
+// TODO: show errors from the url query
+const AuthRegisterPage = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  if (session) return router.replace('/dashboard');
+
   return (
     <div className='container mt-8'>
       <div className='max-w-lg mx-auto'>
@@ -22,4 +29,4 @@ const AuthPage: NextPage = () => {
   );
 };
 
-export default AuthPage;
+export default AuthRegisterPage;

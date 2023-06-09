@@ -14,7 +14,7 @@ import {
 } from '@/utils/auth/providers';
 
 export const authOptions: AuthOptions = {
-  pages: { signIn: '/auth', error: '/auth' },
+  pages: { signIn: '/auth/login', newUser: '/auth/register', error: '/auth/register' },
   providers: [
     // TODO: credentials provider - test for invalid inputs on register
     CredentialsProvider(CredentialsProviderOptions),
