@@ -9,7 +9,6 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 // Hooks imports
 import useCredentials from '@/hooks/useCredentials';
 
-// TODO: send email on register
 const AuthFormRegister = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -37,17 +36,27 @@ const AuthFormRegister = () => {
       return;
     }
 
-    const response = await fetch('http://localhost:3000/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, username, name, password }),
-    });
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, username, name, password }),
+      });
 
-    const data = await response.json();
-    if (data.error) return setError(data.error);
+      const data = await response.json();
 
-    await sendCredentials({ email, username, name, password, newUser: true });
-    setIsLoading(false);
+      if (data.error) {
+        setError(data.error);
+        setIsLoading(false);
+        return;
+      }
+
+      await sendCredentials({ email, username, name, password, newUser: true });
+      setIsLoading(false);
+    } catch (err: any) {
+      console.error(err.message || 'Something went wrong');
+      setIsLoading(false);
+    }
   };
 
   return (

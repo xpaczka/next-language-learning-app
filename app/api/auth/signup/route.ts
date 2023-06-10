@@ -5,8 +5,10 @@ import isEmail from 'validator/lib/isEmail';
 import User from '@/models/userModel';
 // Utils imports
 import { connectToDatabase } from '@/utils/database';
+import Email from '@/utils/email';
+import catchAsync from '@/utils/catchAsync';
 
-const handler = async (req: Request) => {
+const handler = catchAsync(async (req: Request) => {
   const { email, username, name, password } = await req.json();
 
   await connectToDatabase();
@@ -60,7 +62,9 @@ const handler = async (req: Request) => {
   const hashedPassword = await hash(password, 10);
   const user = await User.create({ email, username, name, password: hashedPassword });
 
+  await new Email(user).sendWelcomeMail();
+
   return new Response(JSON.stringify({ status: 'success', data: { user } }), { status: 201 });
-};
+});
 
 export { handler as POST };
