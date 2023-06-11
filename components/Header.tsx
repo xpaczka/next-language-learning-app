@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 // Components imports
-import UserProfileHeader from './user/UserProfileHeader';
+import UserMenuHeader from './user/UserMenuHeader';
 
 const Header = () => {
   return (
@@ -17,7 +17,7 @@ const Header = () => {
             className='w-24 sm:w-36'
           />
         </Link>
-        <UserProfileHeader />
+        <UserMenuHeader />
       </div>
     </header>
   );

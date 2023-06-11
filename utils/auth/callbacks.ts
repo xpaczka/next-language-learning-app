@@ -46,28 +46,28 @@ export const signInCallback = async (user: User | AdapterUser): Promise<boolean>
 export const sessionCallback = async (session: Session, token: JWT): Promise<Session> => {
   try {
     if (token.accessToken) session.accessToken = token.accessToken;
-    if (session.user) session.user.id = token.id;
-  
+    if (session.user) session.user = token.user;
+
     return session;
   } catch (err: any) {
     console.error(err.message);
     return session;
   }
-}
+};
 
 export const jwtCallback = async (token: JWT, account: Account | null, user: User | AdapterUser): Promise<JWT> => {
   try {
     if (account) {
       await connectToDatabase();
-      const userInDatabase = await UserModel.findOne({ email: user.email });
-  
+      const userInDatabase = await UserModel.findOne({ email: user.email }).select('-password -__v');
+
       token.accessToken = account.access_token || generateAccessToken(userInDatabase._id);
-      token.id = userInDatabase._id;
+      token.user = userInDatabase;
     }
-  
+
     return token;
   } catch (err: any) {
     console.error(err.message);
     return token;
   }
-}
+};
