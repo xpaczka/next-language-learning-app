@@ -23,7 +23,7 @@ const useCredentials = (): UseCredentialsReturnValues => {
     try {
       setIsLoading(true);
 
-      await signIn('credentials', { ...params });
+      await signIn('credentials', { ...params, callbackUrl: '/dashboard' });
 
       setIsLoading(false);
     } catch (err: any) {

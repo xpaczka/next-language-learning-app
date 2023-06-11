@@ -3,14 +3,17 @@ import Image from 'next/image';
 import { signIn } from 'next-auth/react';
 
 interface AuthFormProviderProps {
-  id: string; 
+  id: string;
   name: string;
   background: string;
 }
 
 const AuthFormProvider = ({ id, name, background }: AuthFormProviderProps) => {
   return (
-    <button onClick={() => signIn(id)} className={`w-16 aspect-square p-4 rounded-md outline-none border-none ${background}`}>
+    <button
+      onClick={async () => await signIn(id, { callbackUrl: '/dashboard' })}
+      className={`w-16 aspect-square p-4 rounded-md outline-none border-none ${background}`}
+    >
       <Image
         src={`/icons/${id}-logo.svg`}
         alt={`Login with ${name}`}

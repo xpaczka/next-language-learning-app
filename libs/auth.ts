@@ -23,7 +23,6 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     signIn: async ({ user }) => await signInCallback(user),
-    redirect: async () => '/dashboard',
     session: async ({ session, token }) => await sessionCallback(session, token),
     jwt: async ({ token, account, user }) => await jwtCallback(token, account, user),
   },
