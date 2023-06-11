@@ -2,17 +2,11 @@
 
 // Next imports
 import Link from 'next/link';
-// import { useRouter } from 'next/navigation';
-// import { useSession } from 'next-auth/react';
 // Components imports
 import AuthFormRegister from '@/components/pages/auth/AuthFormRegister';
+import PageWithRestrictions from '@/app/withRestrictions';
 
 const AuthRegisterPage = () => {
-  // const { data: session } = useSession();
-  // const router = useRouter();
-
-  // if (session) return router.replace('/dashboard');
-
   return (
     <div className='container mt-8'>
       <div className='max-w-lg mx-auto'>
@@ -28,4 +22,4 @@ const AuthRegisterPage = () => {
   );
 };
 
-export default AuthRegisterPage;
+export default PageWithRestrictions(AuthRegisterPage, { destination: '/dashboard', sessionAvailable: true });
